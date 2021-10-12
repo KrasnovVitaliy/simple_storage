@@ -1,0 +1,190 @@
+openapi: 3.0.1
+info:
+  title: SimpleStorage
+  description: 'HTTP RocksDB '
+  contact:
+    email: developer@MAIL.RU
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://basepath/v1
+tags:
+  - name: data
+    description: data operations
+  - name: keys
+    description: keys operations
+  - name: tokens
+    description: tokens operations
+
+paths:
+  /data/{key}:
+    put:
+      tags:
+        - data
+      summary: Create item
+      description: Create new item
+      operationId: createItem
+      parameters:
+        - name: key
+          in: path
+          description: 'The key that needs to be fetched.'
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: 'Personal access token'
+          required: false
+          schema:
+            type: string
+      requestBody:
+        description: Created record item
+        content:
+          '*/*':
+            schema:
+              type: string
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: { }
+      #        '401':
+      #          $ref: '#/components/responses/UnauthorizedError'
+      x-codegen-request-body-name: body
+    get:
+      tags:
+        - data
+      summary: Get item by key
+      operationId: getItemByKey
+      parameters:
+        - name: key
+          in: path
+          description: 'The item key.'
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: 'Personal access token'
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Invalid user supplied
+          content: { }
+        404:
+          description: User not found
+          content: { }
+    delete:
+      tags:
+        - data
+      summary: Delete data item
+      description: Delete data item in db
+      operationId: deleteItem
+      parameters:
+        - name: key
+          in: path
+          description: The key that needs to be deleted
+          required: true
+          schema:
+            type: string
+        - name: token
+          in: header
+          description: 'Personal access token'
+          required: false
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid user supplied
+          content: { }
+        404:
+          description: User not found
+          content: { }
+
+  /keys:
+    get:
+      tags:
+        - keys
+      summary: Get available keys
+      operationId: getAvailableKeys
+      parameters:
+        - name: token
+          in: header
+          description: 'Personal access token'
+          required: false
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: list
+                items:
+                  type: string
+        400:
+          description: Invalid user supplied
+          content: { }
+        404:
+          description: User not found
+          content: { }
+
+  /tokens:
+    post:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - tokens
+      summary: Create new access token
+      description: Create access token
+      operationId: createToken
+      responses:
+        default:
+          description: successful operation
+          content: { }
+      #        '401':
+      #          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - tokens
+      summary: Delete access token
+      description: Delete access token
+      operationId: deleteToken
+      parameters:
+        - name: token
+          in: path
+          description: The token that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid token supplied
+          content: { }
+        404:
+          description: Token not found
+          content: { }
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: Simple
+
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid

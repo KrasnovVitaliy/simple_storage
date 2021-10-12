@@ -1,0 +1,18 @@
+# Logging configuration
+LOGGING_LEVEL: 'INFO'
+LOGGING_FORMAT: '%(asctime)-15s | %(levelname)s | %(filename)s | %(lineno)d: %(message)s'
+
+# Web access configuration
+WEB_HOST: '127.0.0.1'
+WEB_PORT: 5680
+
+# Is auth required to store and request data
+USE_AUTH: True
+# Is need to encrypt data on a disc
+USE_ENCRYPTION: True
+# Encryption key to encrypt data
+ENCRYPTION_KEY: ',2w).H4yL7mR?ma]-9q:C-NCnj2yF%s@'
+# Master key to create access tokens
+MASTER_KEY: 'gj2}-8-=u}A33jR-`Lr=LJz\U+w-zbAk'
+
+PRECONFIGURED_ACCESS_TOKENS: [ 'Qyu7gJ>4ZBN7@W!!_udG\.5f4>ced9JD' ]

@@ -1,4 +1,4 @@
-PACKAGE_VERSION = "1.0.0"  # Version does not works for server stub
+PACKAGE_VERSION = "1.0.2"
 
 OPENAPI_DEFINITION_PATH = "openapi/definitions/"
 SERVER_STUBS_BASE_OUTPUT_PATH = "./generated/stub"

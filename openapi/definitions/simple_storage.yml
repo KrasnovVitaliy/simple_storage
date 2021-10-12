@@ -1,13 +1,13 @@
 openapi: 3.0.1
 info:
-  title: SimpleStorage
-  description: 'HTTP RocksDB '
+  title: Simple Storage
+  description: 'RocksDB HTTP wrapper with encryption and authentication'
   contact:
-    email: developer@MAIL.RU
+    email: krasnov.v.i@gmail.com
   version: 1.0.0
 externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+  description: Find out more about Simple Storage
+  url: https://github.com/KrasnovVitaliy/simple_storage
 servers:
   - url: https://basepath/v1
 tags:
@@ -141,6 +141,23 @@ paths:
           content: { }
 
   /tokens:
+    get:
+      security:
+        - bearerAuth: [ ]
+      tags:
+        - tokens
+      summary: Get list of available access token
+      description: Get list of available access token
+      operationId: getAllTokens
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: list
+                items:
+                  type: string
     post:
       security:
         - bearerAuth: [ ]
@@ -153,8 +170,6 @@ paths:
         default:
           description: successful operation
           content: { }
-      #        '401':
-      #          $ref: '#/components/responses/UnauthorizedError'
     delete:
       security:
         - bearerAuth: [ ]

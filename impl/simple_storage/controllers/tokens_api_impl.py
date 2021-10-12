@@ -1,6 +1,7 @@
 import logging
 import simple_storage.libs.encryption as encryption
 from simple_storage.libs.storage import Storage
+import simple_storage.libs.tokens as tokens_lib
 from fastapi import HTTPException, status
 import simple_storage.libs.config_loader as config_loader
 import uuid
@@ -11,9 +12,11 @@ storage = Storage()
 
 
 def __upload_preconfigured_access_tokens():
+    tokens = tokens_lib.get_all_tokens()
     logger.info("Upload preconfigured token")
     for t in config.get(config_loader.PRECONFIGURED_ACCESS_TOKENS):
-        __save_token_in_db(t)
+        if t not in tokens:
+            __save_token_in_db(t)
 
 
 def __save_token_in_db(token: str):
@@ -24,6 +27,10 @@ def __save_token_in_db(token: str):
         storage.put_access_token(enc_token.decode())
     else:
         storage.put_access_token(token)
+
+
+async def get_all_tokens(is_authenticated: bool) -> str:
+    return tokens_lib.get_all_tokens()
 
 
 async def create_token(is_authenticated: bool) -> str:

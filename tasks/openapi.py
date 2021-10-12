@@ -74,18 +74,22 @@ def inc_sub_version(config):
     config.run("mv config.py.upd config.py")
 
 
-@task()
 def build_python_client_release(config, service_name='simple_storage'):
     client_path = os.path.join(CLIENT_BASE_OUTPUT_PATH, service_name, 'python')
     print(client_path)
     config.run(f"tar -czvf simple_storage_client_{PACKAGE_VERSION}.tar.gz --directory={client_path}/ .")
 
 
-@task()
 def build_python_stub_release(config, service_name='simple_storage'):
     client_path = os.path.join(SERVER_STUBS_BASE_OUTPUT_PATH, service_name, 'python')
     print(client_path)
     config.run(f"tar -czvf simple_storage_server_{PACKAGE_VERSION}.tar.gz --directory={client_path}/ .")
+
+
+@task()
+def build_releases(config):
+    build_python_client_release(config, service_name='simple_storage')
+    build_python_stub_release(config, service_name='simple_storage')
 
 
 @task()
